@@ -1,0 +1,10 @@
+.agenda {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.agenda__monthBox {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+}
