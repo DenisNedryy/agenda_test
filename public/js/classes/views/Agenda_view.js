@@ -36,10 +36,9 @@ export class Agenda_view {
         const agendaEl = document.createElement("div");
         agendaEl.className = "agenda";
         data.forEach((month, index) => {
-            console.log(this.yearMonth[index]);
-
             const monthBox = document.createElement("div");
             monthBox.className = "agenda__monthBox";
+            // header
             const monthBoxHeader = document.createElement("div");
             monthBoxHeader.classList = "agenda__monthBox__header";
             const monthBoxHeaderContent = document.createElement("p");
