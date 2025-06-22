@@ -11,6 +11,7 @@ export class Agenda_model {
     getAgendaPerYear(year, daysPerMonths, tasks) {
         return daysPerMonths.map((myMonth, index) => {
             return {
+                year: year,
                 month: index + 1,
                 days: Array.from({ length: myMonth }, (_, i) => i + 1).map((day) => {
                     return {

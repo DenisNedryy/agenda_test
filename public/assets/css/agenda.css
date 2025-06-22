@@ -4,7 +4,21 @@
 }
 
 .agenda__monthBox {
-    margin: 5px;
     display: flex;
+    align-items: flex-start;
     flex-direction: column;
+    border: 1px solid black;
+    margin: 0px 73px 15px 0px;
+    width: 300px;
+    padding: 25px;
+}
+
+.agenda__monthBox table {}
+
+.agenda__monthBox table th {
+    padding: 5px;
+}
+
+.agenda__monthBox table td {
+    padding: 5px;
 }
