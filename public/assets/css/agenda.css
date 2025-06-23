@@ -1,9 +1,10 @@
-.agenda {
+/* AGENDA YEAR */
+.agendaYear {
     display: flex;
     flex-wrap: wrap;
 }
 
-.agenda__monthBox {
+.agendaYear__monthBox {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
@@ -13,12 +14,14 @@
     padding: 25px;
 }
 
-.agenda__monthBox table {}
+.agendaYear__monthBox table {}
 
-.agenda__monthBox table th {
+.agendaYear__monthBox table th {
     padding: 5px;
 }
 
-.agenda__monthBox table td {
+.agendaYear__monthBox table td {
     padding: 5px;
 }
+
+/* AGENDA WEEK */

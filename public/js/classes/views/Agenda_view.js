@@ -1,6 +1,6 @@
 export class Agenda_view {
     constructor() {
-        this.calendarView = "year";
+        this.calendarView = "week";
         this.calendarData = [];
         this.yearMonth = [
             "Janvier",
@@ -16,6 +16,22 @@ export class Agenda_view {
             "Novembre",
             "Décembre"
         ];
+        this.daysLetters = [
+            "Lundi",
+            "Mardi",
+            "Mercredi",
+            "Jeudi",
+            "Vendredi",
+            "Samedi",
+            "Dimanche"
+        ];
+    }
+
+    getCurrentDayLetter(num) {
+        return num === 0 ? this.daysLetters[6] : this.daysLetters[num - 1];
+    }
+    getCurrentDayLetterNum(num) {
+        return num === 0 ? 6 : num - 1;
     }
 
     switchViewToWeek() {
@@ -29,20 +45,38 @@ export class Agenda_view {
     }
 
     renderWeekView(data, el) {
+        const agendaEl = document.createElement("div");
+        agendaEl.className = "agendaWeek";
+        const currentYear = data[0].year;
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentDayNum = currentDate.getDate();
+        const currentDayLetter = this.getCurrentDayLetter(currentDate.getDay());
+        const currentDayLetterNum = this.getCurrentDayLetterNum(currentDate.getDay());
+        const boxWeek = document.createElement("div");
+        for (let i = 0; i < 7; i++) {
+            const dayHeader = document.createElement("div");
+            dayHeader.className = "dayHeader";
+            dayHeader.textContent = `${this.daysLetters[i]} ${currentDayNum}`;
+            boxWeek.appendChild(dayHeader);
+        }
 
+
+        agendaEl.appendChild(boxWeek);
+        el.appendChild(agendaEl);
     }
 
     renderYearView(data, el) {
         const agendaEl = document.createElement("div");
-        agendaEl.className = "agenda";
+        agendaEl.className = "agendaYear";
         const year = data[0].year;
         data.forEach((month, index) => {
             const myMonth = this.yearMonth[index];
             const monthBox = document.createElement("div");
-            monthBox.className = "agenda__monthBox";
+            monthBox.className = "agendaYear__monthBox";
             // header
             const monthBoxHeader = document.createElement("div");
-            monthBoxHeader.classList = "agenda__monthBox__header";
+            monthBoxHeader.classList = "agendaYear__monthBox__header";
             const monthBoxHeaderContent = document.createElement("p");
             monthBoxHeaderContent.textContent = this.yearMonth[index];
             monthBoxHeader.appendChild(monthBoxHeaderContent);
