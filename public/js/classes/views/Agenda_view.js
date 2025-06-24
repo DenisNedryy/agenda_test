@@ -1,3 +1,5 @@
+import { tasks } from "../../data/tasks.js";
+
 export class Agenda_view {
     constructor() {
         this.calendarView = "week";
@@ -47,22 +49,55 @@ export class Agenda_view {
     renderWeekView(data, el) {
         const agendaEl = document.createElement("div");
         agendaEl.className = "agendaWeek";
+        const agendaWeekBox = document.createElement("div");
+        agendaWeekBox.className = "agendaWeek__box";
         const currentYear = data[0].year;
         const currentDate = new Date();
         const currentMonth = currentDate.getMonth();
         const currentDayNum = currentDate.getDate();
         const currentDayLetter = this.getCurrentDayLetter(currentDate.getDay());
         const currentDayLetterNum = this.getCurrentDayLetterNum(currentDate.getDay());
-        const boxWeek = document.createElement("div");
+
+        const currentDateMs = new Date(`${currentYear},${currentMonth - 1},${currentDayNum}`).getTime();
+        const lundiMs = currentDateMs - ((60 * 60 * 24 * 1000) * (currentDayLetterNum === 0 ? 7 : currentDayLetterNum));
+
         for (let i = 0; i < 7; i++) {
-            const dayHeader = document.createElement("div");
-            dayHeader.className = "dayHeader";
-            dayHeader.textContent = `${this.daysLetters[i]} ${currentDayNum}`;
-            boxWeek.appendChild(dayHeader);
+            const dayFiche = document.createElement("div");
+            dayFiche.className = 'dayFiche';
+            const dayDate = lundiMs + ((60 * 60 * 24 * 1000) * i);
+            const dayFiche__header = document.createElement("div");
+            dayFiche__header.className = "dayFiche__header";
+            dayFiche__header.textContent = `${this.daysLetters[i]} ${new Date(dayDate).getDate()}`;
+            dayFiche.appendChild(dayFiche__header);
+
+            const tasksEl = document.createElement("div");
+            tasksEl.className = "dayFiche__body"
+            const ul = document.createElement("ul");
+            tasksEl.appendChild(ul);
+            const dayYear = new Date(dayDate).getFullYear();
+            const dayMonth = new Date(dayDate).getMonth();
+            const dayDateNum = new Date(dayDate).getDate();
+
+            const tasksByDay = [];
+            for (let j = 0; j < tasks.length; j++) {
+                const taskDateArray = tasks[j].date.split('-');
+                if (Number(dayYear) === Number(taskDateArray[0])
+                    && Number(dayMonth + 1) === Number(taskDateArray[1])
+                    && Number(dayDateNum) === Number(taskDateArray[2])) {
+                    tasksByDay.push(tasks[j]);
+                }
+            }
+            for (let k = 0; k < tasksByDay.length; k++) {
+                const li = document.createElement("li");
+                li.textContent = tasksByDay[k].name;
+                ul.appendChild(li);
+            }
+            tasksEl.appendChild(ul);
+            dayFiche.appendChild(tasksEl);
+
+            agendaWeekBox.appendChild(dayFiche);
         }
-
-
-        agendaEl.appendChild(boxWeek);
+        agendaEl.appendChild(agendaWeekBox);
         el.appendChild(agendaEl);
     }
 

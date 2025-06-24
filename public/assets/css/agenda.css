@@ -25,3 +25,20 @@
 }
 
 /* AGENDA WEEK */
+.agendaWeek {
+    display: flex;
+    flex-direction: column;
+}
+
+.agendaWeek__box {
+    display: flex;
+}
+
+.dayFiche {
+    margin: 15px;
+    border: 1px solid black;
+}
+
+.dayFiche ul {
+    list-style-type: none;
+}
