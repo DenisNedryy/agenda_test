@@ -58,7 +58,7 @@ export class Agenda_view {
         const currentDayLetter = this.getCurrentDayLetter(currentDate.getDay());
         const currentDayLetterNum = this.getCurrentDayLetterNum(currentDate.getDay());
 
-        const currentDateMs = new Date(`${currentYear},${currentMonth - 1},${currentDayNum}`).getTime();
+        const currentDateMs = new Date(`${currentYear},${currentMonth + 1},${currentDayNum}`).getTime();
         const lundiMs = currentDateMs - ((60 * 60 * 24 * 1000) * (currentDayLetterNum === 0 ? 7 : currentDayLetterNum));
 
         for (let i = 0; i < 7; i++) {
