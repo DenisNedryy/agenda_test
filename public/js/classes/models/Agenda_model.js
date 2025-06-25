@@ -31,6 +31,14 @@ export class Agenda_model {
         return num === 0 ? 6 : num - 1;
     }
 
+    agendaWeekTurnLeft(){
+        // ok
+    }
+
+    agendaWeekTurnRight(){
+        
+    }
+
     getAgendaPerWeek(date = '2025-05-25') {
         const dateArray = date.split('-').map(Number);
         const year = dateArray[0];
