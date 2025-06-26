@@ -2,8 +2,6 @@ import { tasks } from "../../data/tasks.js";
 
 export class Agenda_view {
     constructor() {
-        this.calendarView = "week";
-        this.calendarData = [];
         this.yearMonth = [
             "Janvier",
             "Février",
@@ -36,16 +34,6 @@ export class Agenda_view {
         return num === 0 ? 6 : num - 1;
     }
 
-    switchViewToWeek() {
-        this.calendarView = "week";
-        this.render(this.calendarData);
-    }
-
-    switchViewToYear() {
-        this.calendarView = "year";
-        this.render(this.calendarData);
-    }
-
     renderWeekView(data, el) {
         console.log(data);
 
@@ -54,7 +42,6 @@ export class Agenda_view {
         const agendaWeekBox = document.createElement("div");
         agendaWeekBox.className = "agendaWeek__box";
         const weekDays = data.weekDays;
-
 
         for (let i = 0; i < weekDays.length; i++) {
             const dayFiche = document.createElement("div");
@@ -78,41 +65,15 @@ export class Agenda_view {
             dayFiche.appendChild(tasksEl);
 
             agendaWeekBox.appendChild(dayFiche);
-
         }
         agendaEl.appendChild(agendaWeekBox);
         el.appendChild(agendaEl);
-
-
-        // for (let i = 0; i < 7; i++) {
-
-
-        //     const tasksByDay = [];
-        //     for (let j = 0; j < tasks.length; j++) {
-        //         const taskDateArray = tasks[j].date.split('-');
-        //         if (Number(dayYear) === Number(taskDateArray[0])
-        //             && Number(dayMonth + 1) === Number(taskDateArray[1])
-        //             && Number(dayDateNum) === Number(taskDateArray[2])) {
-        //             tasksByDay.push(tasks[j]);
-        //         }
-        //     }
-        //     for (let k = 0; k < tasksByDay.length; k++) {
-        //         const li = document.createElement("li");
-        //         li.textContent = tasksByDay[k].name;
-        //         ul.appendChild(li);
-        //     }
-        //     tasksEl.appendChild(ul);
-        //     dayFiche.appendChild(tasksEl);
-
-        //     agendaWeekBox.appendChild(dayFiche);
-        // }
-        // agendaEl.appendChild(agendaWeekBox);
-        // el.appendChild(agendaEl);
     }
 
     renderYearView(data, el) {
         const agendaEl = document.createElement("div");
         agendaEl.className = "agendaYear";
+        console.log(data);
         const year = data[0].year;
         data.forEach((month, index) => {
             const myMonth = this.yearMonth[index];
@@ -221,24 +182,20 @@ export class Agenda_view {
         return number < 10 ? `0${number}` : number;
     }
 
-    render(calendarData) {
-        // console.log(calendarData);
-        this.calendarData = calendarData;
+    renderCalendarWeek(calendarData) {
+        console.log(calendarData);
         const el = document.querySelector("#root");
         if (el) {
             el.innerHTML = "";
-            switch (this.calendarView) {
-                case "week":
-                    this.renderWeekView(this.calendarData.agendaWeek, el);
-                    break;
-
-                case "year":
-                    this.renderYearView(this.calendarData.agendaYear, el);
-                    break;
-
-                default: throw new Error("calendar view unselected");
-            }
+            this.renderWeekView(calendarData, el);
         }
+    }
 
+    renderCalendarYear(calendarData) {
+        const el = document.querySelector("#root");
+        if (el) {
+            el.innerHTML = "";
+            this.renderYearView(calendarData, el);
+        }
     }
 }

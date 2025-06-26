@@ -1,26 +1,13 @@
 import { tasks } from "../../data/tasks.js";
 
 export class Agenda_model {
-    constructor() { }
+    constructor() {
+        this.stateDateMs = null;
+    }
 
     getDaysInFebruary(year = this.year) {
         if (year === null) throw new Error("Year not set");
         return (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28;
-    }
-
-    getAgendaPerYear(year, daysPerMonths, tasks) {
-        return daysPerMonths.map((myMonth, index) => {
-            return {
-                year: year,
-                month: index + 1,
-                days: Array.from({ length: myMonth }, (_, i) => i + 1).map((day) => {
-                    return {
-                        day: day,
-                        task: this.checkIfTask(tasks, year, index + 1, day) || null
-                    };
-                })
-            };
-        });
     }
 
     getFormatForNumbersWidhtZeroBefore(number) {
@@ -31,15 +18,19 @@ export class Agenda_model {
         return num === 0 ? 6 : num - 1;
     }
 
-    agendaWeekTurnLeft(){
-        // ok
+    agendaWeekTurnLeft() {
+        this.stateDateMs = this.stateDateMs - (60 * 60 * 24 * 7 * 1000);
     }
 
-    agendaWeekTurnRight(){
-        
+    agendaWeekTurnRight() {
+        this.stateDateMs = this.stateDateMs + (60 * 60 * 24 * 7 * 1000);
     }
 
-    getAgendaPerWeek(date = '2025-05-25') {
+
+    getAgendaPerWeek(date = false) {
+        if (date === false) {
+            return this.init();
+        }
         const dateArray = date.split('-').map(Number);
         const year = dateArray[0];
         const month = dateArray[1] + 1;
@@ -72,12 +63,31 @@ export class Agenda_model {
 
             weekDayTasks.push({ tasksByDay, weekDays });
         }
-        // return { year: year, month: month, dateDate: dateDate, weekDayTasks: weekDayTasks };
         return {
             dateSelected: { year: year, month: month, dateDate: dateDate },
             weekDays: weekDayTasks
         }
+    }
 
+    getAgendaPerYear(year = false) {
+        if (year === false) year = new Date().getFullYear();
+        const daysPerMonths = [31, this.getDaysInFebruary(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        const currentDate = new Date();
+        const date = `${currentDate.getFullYear()}-${this.getFormatForNumbersWidhtZeroBefore(currentDate.getMonth())}-${this.getFormatForNumbersWidhtZeroBefore(currentDate.getDate())}`;
+        this.stateDateMs = currentDate;
+
+        return daysPerMonths.map((myMonth, index) => {
+            return {
+                year: year,
+                month: index + 1,
+                days: Array.from({ length: myMonth }, (_, i) => i + 1).map((day) => {
+                    return {
+                        day: day,
+                        task: this.checkIfTask(tasks, year, index + 1, day) || null
+                    };
+                })
+            };
+        });
     }
 
     checkIfTask(tasks, year, month, day) {
@@ -93,12 +103,12 @@ export class Agenda_model {
         return matchedTasks.length > 0 ? matchedTasks : null;
     }
 
-    init(year) {
+    init() {
+        const year = new Date().getFullYear();
         const daysPerMonths = [31, this.getDaysInFebruary(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-        return {
-            agendaYear: this.getAgendaPerYear(year, daysPerMonths, tasks),
-            agendaWeek: this.getAgendaPerWeek()
-        }
+        const currentDate = new Date();
+        const date = `${currentDate.getFullYear()}-${this.getFormatForNumbersWidhtZeroBefore(currentDate.getMonth())}-${this.getFormatForNumbersWidhtZeroBefore(currentDate.getDate())}`;
+        this.stateDateMs = currentDate;
+        return this.getAgendaPerWeek(date);
     }
 }
